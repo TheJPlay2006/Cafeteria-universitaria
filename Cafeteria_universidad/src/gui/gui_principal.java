@@ -4,6 +4,8 @@
  */
 package gui;
 
+import dominio.Usuario;
+
 /**
  *
  * @author jh599
@@ -28,18 +30,14 @@ public class gui_principal extends javax.swing.JFrame {
 
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        jInternalFrame1 = new javax.swing.JInternalFrame();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jScrollPaneEnvuelveTabla = new javax.swing.JScrollPane();
-        btnNuevo = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnGuardar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
-        btnActivarDesactivar = new javax.swing.JButton();
-        txtNombreProducto = new javax.swing.JTextField();
-        ftxPrecioProducto = new javax.swing.JFormattedTextField();
-        jCheckBoxActivarDesactivar = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuArchivo = new javax.swing.JMenu();
         jMenuProductos = new javax.swing.JMenu();
@@ -50,105 +48,76 @@ public class gui_principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jInternalFrame1.setVisible(true);
+        jButton1.setText("jButton1");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        jButton2.setText("jButton2");
 
-        btnNuevo.setText("Nuevo");
+        jButton3.setText("jButton3");
 
-        btnEditar.setText("Editar");
+        jButton4.setText("jButton4");
 
-        btnGuardar.setText("Guardar");
+        jLabel1.setText("jLabel1");
 
-        btnCancelar.setText("Cancelar");
+        jLabel2.setText("jLabel2");
 
-        btnActivarDesactivar.setText("Activar/Desactivar");
+        jLabel3.setText("jLabel3");
 
-        jCheckBoxActivarDesactivar.setText("jCheckBox1");
-
-        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
-        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
-        jInternalFrame1Layout.setHorizontalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(btnNuevo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEditar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGuardar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancelar)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnActivarDesactivar))
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                .addGap(183, 183, 183)
-                                .addComponent(ftxPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                .addGap(139, 139, 139)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(35, 35, 35)
-                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPaneEnvuelveTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jInternalFrame1Layout.createSequentialGroup()
-                                .addComponent(jCheckBoxActivarDesactivar)
-                                .addGap(75, 75, 75))))
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addGap(332, 332, 332)
-                        .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(149, Short.MAX_VALUE))
-        );
-        jInternalFrame1Layout.setVerticalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNuevo)
-                    .addComponent(btnEditar)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnActivarDesactivar))
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                        .addComponent(ftxPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jCheckBoxActivarDesactivar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jScrollPaneEnvuelveTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-        );
+        jLabel4.setText("jLabel4");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jInternalFrame1)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(181, 181, 181)
+                        .addComponent(jButton1)
+                        .addGap(74, 74, 74)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(208, 208, 208)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addComponent(jButton3)
+                        .addGap(66, 66, 66)
+                        .addComponent(jButton4))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(107, 107, 107)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(99, 99, 99)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(201, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jInternalFrame1)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(135, 135, 135)
+                        .addComponent(jLabel1)
+                        .addGap(91, 91, 91))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(76, 76, 76))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(65, 65, 65)))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4)
+                    .addComponent(jButton2))
+                .addContainerGap(291, Short.MAX_VALUE))
         );
 
         jMenuArchivo.setText("Archivo");
@@ -177,7 +146,7 @@ public class gui_principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -219,14 +188,14 @@ public class gui_principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActivarDesactivar;
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnNuevo;
-    private javax.swing.JFormattedTextField ftxPrecioProducto;
-    private javax.swing.JCheckBox jCheckBoxActivarDesactivar;
-    private javax.swing.JInternalFrame jInternalFrame1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenuArchivo;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuCalculadora;
@@ -234,9 +203,5 @@ public class gui_principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuProductos;
     private javax.swing.JMenu jMenuVentas;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPaneEnvuelveTabla;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField txtNombreProducto;
     // End of variables declaration//GEN-END:variables
 }
