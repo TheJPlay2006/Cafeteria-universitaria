@@ -32,15 +32,4 @@ public class ConexionBD {
         // Establecer la conexión
         return DriverManager.getConnection(URL);
     }
-
-    // Método principal para probar la conexión (opcional, puedes borrarlo después)
-    public static void main(String[] args) {
-        System.out.println("🔌 Iniciando prueba de conexión...");
-        try (Connection conn = getConnection()) {
-            System.out.println("✅ ¡Conexión exitosa a la base de datos!");
-        } catch (SQLException e) {
-            System.err.println("❌ Error al conectar: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 }

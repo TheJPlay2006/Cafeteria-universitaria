@@ -16,6 +16,7 @@ public class gui_consulta_dia extends javax.swing.JDialog {
     public gui_consulta_dia(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

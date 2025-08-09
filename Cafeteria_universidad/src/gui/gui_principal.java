@@ -10,14 +10,17 @@ import dominio.Usuario;
  *
  * @author jh599
  */
-public class gui_principal extends javax.swing.JFrame {
 
+public class gui_principal extends javax.swing.JFrame {
+private Usuario usuarioLogueado;
     /**
      * Creates new form gui_principal
      */
-    public gui_principal() {
-        initComponents();
-    }
+  public gui_principal(Usuario usuario) {
+    this.usuarioLogueado = usuario;
+    initComponents(); 
+     setLocationRelativeTo(null);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -30,178 +33,114 @@ public class gui_principal extends javax.swing.JFrame {
 
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenuArchivo = new javax.swing.JMenu();
-        jMenuProductos = new javax.swing.JMenu();
-        jMenuVentas = new javax.swing.JMenu();
-        jMenuCalculadora = new javax.swing.JMenu();
+        btnGestionProducto = new javax.swing.JButton();
+        btnRegistroVenta = new javax.swing.JButton();
+        btnConsultaDia = new javax.swing.JButton();
+        btnCalculadora = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("jButton1");
+        btnGestionProducto.setText("Gestion producto");
+        btnGestionProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionProductoActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("jButton2");
+        btnRegistroVenta.setText("Registro venta");
+        btnRegistroVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistroVentaActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("jButton3");
+        btnConsultaDia.setText("Consulta del día");
+        btnConsultaDia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultaDiaActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("jButton4");
-
-        jLabel1.setText("jLabel1");
-
-        jLabel2.setText("jLabel2");
-
-        jLabel3.setText("jLabel3");
-
-        jLabel4.setText("jLabel4");
+        btnCalculadora.setText("Calculadora");
+        btnCalculadora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalculadoraActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(181, 181, 181)
-                        .addComponent(jButton1)
-                        .addGap(74, 74, 74)
-                        .addComponent(jButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(208, 208, 208)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addComponent(jButton3)
-                        .addGap(66, 66, 66)
-                        .addComponent(jButton4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(107, 107, 107)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(99, 99, 99)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE)
+                .addComponent(btnGestionProducto)
+                .addGap(44, 44, 44)
+                .addComponent(btnRegistroVenta)
+                .addGap(54, 54, 54)
+                .addComponent(btnConsultaDia)
+                .addGap(56, 56, 56)
+                .addComponent(btnCalculadora)
+                .addGap(84, 84, 84))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addComponent(jLabel1)
-                        .addGap(91, 91, 91))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(76, 76, 76))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
-                                .addGap(65, 65, 65)))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(65, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton2))
-                .addContainerGap(291, Short.MAX_VALUE))
+                    .addComponent(btnCalculadora)
+                    .addComponent(btnConsultaDia)
+                    .addComponent(btnRegistroVenta)
+                    .addComponent(btnGestionProducto))
+                .addGap(59, 59, 59))
         );
-
-        jMenuArchivo.setText("Archivo");
-        jMenuBar1.add(jMenuArchivo);
-
-        jMenuProductos.setText("Productos");
-        jMenuBar1.add(jMenuProductos);
-
-        jMenuVentas.setText("Ventas");
-        jMenuBar1.add(jMenuVentas);
-
-        jMenuCalculadora.setText("Calculadora");
-        jMenuBar1.add(jMenuCalculadora);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnGestionProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionProductoActionPerformed
+      gui_gestion_productos gui_produc = new gui_gestion_productos ();
+        gui_produc.setVisible(true);
+    }//GEN-LAST:event_btnGestionProductoActionPerformed
+
+    private void btnRegistroVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroVentaActionPerformed
+        gui_registro_venta gui_venta = new gui_registro_venta ();
+        gui_venta.setVisible(true);
+    }//GEN-LAST:event_btnRegistroVentaActionPerformed
+
+    private void btnConsultaDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaDiaActionPerformed
+      gui_consulta_dia gui_consulta = new gui_consulta_dia(this, true); 
+        gui_consulta.setVisible(true);
+    }//GEN-LAST:event_btnConsultaDiaActionPerformed
+    
+    private void btnCalculadoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculadoraActionPerformed
+      gui_calcu gui_cal = new gui_calcu(this, true);  
+    gui_cal.setVisible(true);
+    }//GEN-LAST:event_btnCalculadoraActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(gui_principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(gui_principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(gui_principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(gui_principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new gui_principal().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenu jMenuArchivo;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuCalculadora;
+    private javax.swing.JButton btnCalculadora;
+    private javax.swing.JButton btnConsultaDia;
+    private javax.swing.JButton btnGestionProducto;
+    private javax.swing.JButton btnRegistroVenta;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenu jMenuProductos;
-    private javax.swing.JMenu jMenuVentas;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

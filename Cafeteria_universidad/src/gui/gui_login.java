@@ -23,6 +23,7 @@ public class gui_login extends javax.swing.JFrame {
      */
     public gui_login() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -53,6 +54,11 @@ public class gui_login extends javax.swing.JFrame {
         lblContrasena.setText("Contraseña:");
 
         jCheckBoxContrasena.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jCheckBoxContrasena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxContrasenaActionPerformed(evt);
+            }
+        });
 
         btnIngresar.setText("Ingresar");
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
@@ -188,6 +194,14 @@ public class gui_login extends javax.swing.JFrame {
         btnIngresar.setEnabled(true);
     }
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void jCheckBoxContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxContrasenaActionPerformed
+        if (jCheckBoxContrasena.isSelected()) {
+        jPasswordFieldContrasena.setEchoChar((char) 0); 
+    } else {
+        jPasswordFieldContrasena.setEchoChar('*');
+    }
+    }//GEN-LAST:event_jCheckBoxContrasenaActionPerformed
 
     /**
      * @param args the command line arguments

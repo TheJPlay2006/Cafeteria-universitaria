@@ -4,6 +4,13 @@
  */
 package gui;
 
+import dominio.Producto;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import servicio.ProductoServicio;
+import java.sql.SQLException;
+
 /**
  *
  * @author jh599
@@ -13,10 +20,66 @@ public class gui_gestion_productos extends javax.swing.JFrame {
     /**
      * Creates new form gui_gestion_productos
      */
-    public gui_gestion_productos() {
-        initComponents();
-    }
+    
+    private ProductoServicio productoService;
+private Producto productoSeleccionado; 
+private boolean editando = false;
 
+    public gui_gestion_productos() {
+        // Inicializar servicio
+    this.productoService = new ProductoServicio();
+    this.productoSeleccionado = null;
+    initComponents();
+    setLocationRelativeTo(null);
+   
+    cargarProductosEnTabla();
+         setLocationRelativeTo(null);
+    }
+private void cargarProductosEnTabla() {
+    try {
+        // Limpiar tabla
+        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+        modelo.setRowCount(0); // Limpiar filas
+
+        // Obtener productos del servicio
+        List<Producto> productos = productoService.listarProductos();
+
+        // Agregar filas
+        for (Producto p : productos) {
+            Object[] fila = {
+                p.getId(),
+                p.getNombre(),
+                String.format("%.2f", p.getPrecioUnitario()),
+                p.isActivo() ? "Activo" : "Inactivo"
+            };
+            modelo.addRow(fila);
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this,
+            "❌ No se pudieron cargar los productos: " + e.getMessage(),
+            "Error de conexión", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+}
+
+private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
+    int fila = tblProductos.getSelectedRow();
+    if (fila >= 0) {
+        int id = (int) tblProductos.getValueAt(fila, 0);
+        try {
+            productoSeleccionado = productoService.obtenerProductoPorId(id);
+            if (productoSeleccionado != null) {
+                txtNombreProducto.setText(productoSeleccionado.getNombre());
+                jFormattedTextField1.setText(String.valueOf(productoSeleccionado.getPrecioUnitario()));
+                jCheckBox.setSelected(productoSeleccionado.isActivo());
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar producto.");
+            e.printStackTrace();
+        }
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,7 +91,7 @@ public class gui_gestion_productos extends javax.swing.JFrame {
 
         panelCrud = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblProductos = new javax.swing.JTable();
         btnNuevo = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
@@ -42,7 +105,7 @@ public class gui_gestion_productos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -53,17 +116,42 @@ public class gui_gestion_productos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblProductos);
 
         btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnActivarDesactivar.setText("Activar/Desactivar");
+        btnActivarDesactivar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActivarDesactivarActionPerformed(evt);
+            }
+        });
 
         lblNombreProducto.setText("Nombre del producto: ");
 
@@ -106,12 +194,13 @@ public class gui_gestion_productos extends javax.swing.JFrame {
             panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCrudLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
-                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCheckBox)
-                    .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombreProducto)
-                    .addComponent(lblPrecio))
+                    .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblNombreProducto)
+                        .addComponent(lblPrecio)))
                 .addGap(66, 66, 66)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
@@ -137,6 +226,105 @@ public class gui_gestion_productos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+ try {
+        String nombre = txtNombreProducto.getText().trim();
+        String precioStr = jFormattedTextField1.getText().trim();
+
+        // Validaciones mínimas en GUI 
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "⚠️ El nombre es obligatorio.");
+            return;
+        }
+        if (precioStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "⚠️ Ingresa un precio.");
+            return;
+        }
+
+        double precio;
+        try {
+            precio = Double.parseDouble(precioStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "⚠️ Precio inválido.");
+            return;
+        }
+
+        boolean activo = jCheckBox.isSelected();
+
+        // ✅ Llamada al servicio (aquí va toda la lógica)
+        productoService.guardarProducto(nombre, precio, activo, productoSeleccionado);
+
+        // ✅ Éxito: actualizar vista
+        cargarProductosEnTabla();
+        limpiarFormulario();
+        JOptionPane.showMessageDialog(this, "✅ Producto guardado con éxito.");
+
+    } catch (IllegalArgumentException e) {
+        // Error de validación
+        JOptionPane.showMessageDialog(this, "⚠️ " + e.getMessage());
+    } catch (SQLException e) {
+        // Error de base de datos
+        JOptionPane.showMessageDialog(this, "❌ Error al guardar en la base de datos.");
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+       limpiarFormulario();
+    editando = false;
+    productoSeleccionado = null;
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+      int fila = tblProductos.getSelectedRow();
+    if (fila < 0) {
+        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un producto para editar.");
+        return;
+    }
+    editando = true;
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+       limpiarFormulario();
+    editando = false;
+    productoSeleccionado = null;
+}
+
+private void limpiarFormulario() {
+    txtNombreProducto.setText("");
+    jFormattedTextField1.setText("");
+    jCheckBox.setSelected(true);
+    tblProductos.clearSelection();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnActivarDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarDesactivarActionPerformed
+       int fila = tblProductos.getSelectedRow();
+    if (fila < 0) {
+        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un producto.");
+        return;
+    }
+
+    int id = (int) tblProductos.getValueAt(fila, 0);
+    String nombre = (String) tblProductos.getValueAt(fila, 1);
+    boolean estadoActual = "Activo".equals(tblProductos.getValueAt(fila, 3));
+
+    String mensaje = estadoActual 
+        ? "¿Deseas desactivar el producto '" + nombre + "'?" 
+        : "¿Deseas activar el producto '" + nombre + "'?";
+
+    int opcion = JOptionPane.showConfirmDialog(this, mensaje, "Confirmar", JOptionPane.YES_NO_OPTION);
+    if (opcion == JOptionPane.YES_OPTION) {
+        try {
+            productoService.activarDesactivarProducto(id, !estadoActual);
+            cargarProductosEnTabla(); // Refrescar
+            JOptionPane.showMessageDialog(this, "✅ Estado actualizado.");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "❌ Error al cambiar estado.");
+            e.printStackTrace();
+        }
+    }
+    }//GEN-LAST:event_btnActivarDesactivarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,10 +370,10 @@ public class gui_gestion_productos extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblNombreProducto;
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JPanel panelCrud;
+    private javax.swing.JTable tblProductos;
     private javax.swing.JTextField txtNombreProducto;
     // End of variables declaration//GEN-END:variables
 }
