@@ -32,15 +32,13 @@ public class gui_registro_venta extends javax.swing.JFrame {
         private VentaServicio ventaService;
     
     public gui_registro_venta() {
-    this.usuarioLogueado = usuario;
+     this.usuarioLogueado = usuario;
     this.productoService = new ProductoServicio();
     this.ventaService = new VentaServicio(); 
-    
     initComponents();
     configurarTabla();
     setLocationRelativeTo(null);
-    
-    // Valor inicial del spinner
+  
     jSpinnerCantidad.setValue(1);
     }
     
