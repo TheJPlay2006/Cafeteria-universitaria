@@ -53,26 +53,26 @@ public class RepositorioProducto {
     }
 
     public List<Producto> findAll() throws SQLException {
-        String sql = "SELECT id, nombre, precio_unitario, activo, creado FROM PRODUCTOS ORDER BY nombre";
-        List<Producto> productos = new ArrayList<>();
+   String sql = "SELECT id, nombre, precio_unitario, activo, creado FROM PRODUCTOS ORDER BY id ASC";
+    List<Producto> productos = new ArrayList<>();
 
-        try (Connection conn = ConexionBD.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+    try (Connection conn = ConexionBD.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
 
-            while (rs.next()) {
-                Producto producto = new Producto(
-                    rs.getInt("id"),
-                    rs.getString("nombre"),
-                    rs.getDouble("precio_unitario"),
-                    rs.getBoolean("activo"),
-                    rs.getTimestamp("creado").toLocalDateTime()
-                );
-                productos.add(producto);
-            }
+        while (rs.next()) {
+            Producto producto = new Producto(
+                rs.getInt("id"),
+                rs.getString("nombre"),
+                rs.getDouble("precio_unitario"),
+                rs.getBoolean("activo"),
+                rs.getTimestamp("creado").toLocalDateTime()
+            );
+            productos.add(producto);
         }
-        return productos;
     }
+    return productos;
+}
 
     public boolean existeProductoConNombre(String nombre) throws SQLException {
         String sql = "SELECT COUNT(*) FROM PRODUCTOS WHERE LOWER(nombre) = LOWER(?)";
@@ -90,7 +90,28 @@ public class RepositorioProducto {
         }
         return false;
     }
-
+public Producto findByNombre(String nombre) throws SQLException {
+    String sql = "SELECT id, nombre, precio_unitario, activo, creado FROM PRODUCTOS WHERE nombre = ? AND activo = 1";
+    
+    try (Connection conn = ConexionBD.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+        stmt.setString(1, nombre);
+        
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return new Producto(
+                    rs.getInt("id"),
+                    rs.getString("nombre"),
+                    rs.getDouble("precio_unitario"),
+                    rs.getBoolean("activo"),
+                    rs.getTimestamp("creado").toLocalDateTime()
+                );
+            }
+        }
+    }
+    return null;
+}
     public void activarDesactivar(int id, boolean activo) throws SQLException {
         String sql = "UPDATE PRODUCTOS SET activo = ? WHERE id = ?";
         

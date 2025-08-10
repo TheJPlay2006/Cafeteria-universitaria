@@ -8,14 +8,90 @@ package gui;
  *
  * @author jh599
  */
+
+import dominio.Producto;
+import dominio.Usuario;
+import dominio.DetalleVenta;
+import servicio.ProductoServicio;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import dominio.Venta;  
+import servicio.VentaServicio;
+
 public class gui_registro_venta extends javax.swing.JFrame {
 
     /**
      * Creates new form gui_registro_venta
      */
+    
+    private Usuario usuarioLogueado;
+  private ProductoServicio productoService;
+        private VentaServicio ventaService;
+    
     public gui_registro_venta() {
-        initComponents();
-         setLocationRelativeTo(null);
+    this.usuarioLogueado = usuario;
+    this.productoService = new ProductoServicio();
+    this.ventaService = new VentaServicio(); 
+    
+    initComponents();
+    configurarTabla();
+    setLocationRelativeTo(null);
+    
+    // Valor inicial del spinner
+    jSpinnerCantidad.setValue(1);
+    }
+    
+     private void configurarTabla() {
+        // Configurar modelo de tabla vacío
+        tblDetalles.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {
+                "Producto", "Cantidad", "Precio", "Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        });
+    }
+     
+private void actualizarTotales() {
+        double subtotal = 0;
+        
+        // Calcular subtotal desde la tabla
+        DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            double totalLinea = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+            subtotal += totalLinea;
+        }
+        
+        // Calcular impuestos
+        double iva = subtotal * 0.07;    // 7%
+        double ivi = subtotal * 0.13;    // 13%
+        double descuento = 0;
+        
+        if (jCheckBoxDescuento.isSelected()) {
+            try {
+                descuento = Double.parseDouble(lblDescuento.getText());
+            } catch (NumberFormatException e) {
+                descuento = 0;
+            }
+        }
+        
+        double total = subtotal + iva + ivi - descuento;
+        
+        // Actualizar etiquetas
+        lblSubtotal.setText("Subtotal: $" + String.format("%.2f", subtotal));
+        lblIva7.setText("IVA (7%): $" + String.format("%.2f", iva));
+        lblIVI3.setText("IVI (13%): $" + String.format("%.2f", ivi));
+        lblDescuento.setText("Descuento: $" + String.format("%.2f", descuento));
+        lblTotal.setText("Total: $" + String.format("%.2f", total));
     }
 
     /**
@@ -32,7 +108,7 @@ public class gui_registro_venta extends javax.swing.JFrame {
         txtBuscarNombre = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblDetalles = new javax.swing.JTable();
         jSpinnerCantidad = new javax.swing.JSpinner();
         jCheckBoxDescuento = new javax.swing.JCheckBox();
         lblSubtotal = new javax.swing.JLabel();
@@ -49,8 +125,13 @@ public class gui_registro_venta extends javax.swing.JFrame {
         lblBuscarNombre.setText("Buscar producto por nombre: ");
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDetalles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -61,7 +142,13 @@ public class gui_registro_venta extends javax.swing.JFrame {
                 "Producto", "Cantidad", "Precio", "Total"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDetalles);
+
+        jCheckBoxDescuento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxDescuentoActionPerformed(evt);
+            }
+        });
 
         lblSubtotal.setText("Subtotal: $X.XX");
 
@@ -74,10 +161,25 @@ public class gui_registro_venta extends javax.swing.JFrame {
         lblTotal.setText("Total: $X.XX");
 
         btnFinalizarVenta.setText("Finalizar venta");
+        btnFinalizarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarVentaActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnNuevoItem.setText("Nuevo ítem");
+        btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoItemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -115,9 +217,9 @@ public class gui_registro_venta extends javax.swing.JFrame {
                                 .addGap(69, 69, 69)
                                 .addComponent(jCheckBoxDescuento))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(56, 56, 56)
+                                .addGap(48, 48, 48)
                                 .addComponent(btnCancelar)
-                                .addGap(72, 72, 72)
+                                .addGap(80, 80, 80)
                                 .addComponent(btnNuevoItem)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -174,6 +276,140 @@ public class gui_registro_venta extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+    String nombreBuscado = txtBuscarNombre.getText().trim();
+        
+        if (nombreBuscado.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese el nombre del producto.");
+            return;
+        }
+        
+        try {
+            // Buscar producto por nombre
+            Producto producto = productoService.buscarPorNombre(nombreBuscado);
+            
+            if (producto == null || !producto.isActivo()) {
+                JOptionPane.showMessageDialog(this, "Producto no encontrado o inactivo.");
+                return;
+            }
+            
+            int cantidad = (Integer) jSpinnerCantidad.getValue();
+            double totalLinea = cantidad * producto.getPrecioUnitario();
+            
+            // Agregar a la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
+            Object[] fila = {
+                producto.getNombre(),
+                cantidad,
+                String.format("%.2f", producto.getPrecioUnitario()),
+                String.format("%.2f", totalLinea)
+            };
+            modelo.addRow(fila);
+            
+            // Actualizar totales
+            actualizarTotales();
+            
+            // Limpiar campos
+            txtBuscarNombre.setText("");
+            jSpinnerCantidad.setValue(1);
+            txtBuscarNombre.requestFocus();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al buscar producto: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void jCheckBoxDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxDescuentoActionPerformed
+          if (jCheckBoxDescuento.isSelected()) {
+            String descuentoStr = JOptionPane.showInputDialog(this, "Ingrese monto de descuento:");
+            try {
+                double descuento = Double.parseDouble(descuentoStr);
+                if (descuento < 0) {
+                    JOptionPane.showMessageDialog(this, "Descuento no puede ser negativo.");
+                    jCheckBoxDescuento.setSelected(false);
+                    return;
+                }
+                lblDescuento.setText(String.format("%.2f", descuento));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Monto inválido.");
+                jCheckBoxDescuento.setSelected(false);
+            }
+        } else {
+            lblDescuento.setText("0.00");
+        }
+        actualizarTotales();
+    }//GEN-LAST:event_jCheckBoxDescuentoActionPerformed
+
+    private void btnFinalizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarVentaActionPerformed
+    if (tblDetalles.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "Agregue al menos un producto.");
+        return;
+    }
+    
+    try {
+        // Crear lista de detalles desde la tabla
+        List<DetalleVenta> detalles = new ArrayList<>();
+        DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
+        
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            String nombreProd = modelo.getValueAt(i, 0).toString();
+            int cantidad = Integer.parseInt(modelo.getValueAt(i, 1).toString());
+            double precioUnit = Double.parseDouble(modelo.getValueAt(i, 2).toString());
+            double totalLinea = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+            
+            // Buscar producto por nombre
+            Producto producto = productoService.buscarPorNombre(nombreProd);
+            
+            if (producto != null) {
+                DetalleVenta detalle = new DetalleVenta(
+                    0, null, producto, cantidad, precioUnit, totalLinea
+                );
+                detalles.add(detalle);
+            }
+        }
+        
+        double descuento = 0;
+        if (jCheckBoxDescuento.isSelected()) {
+            try {
+                descuento = Double.parseDouble(lblDescuento.getText());
+            } catch (NumberFormatException e) {
+                descuento = 0;
+            }
+        }
+        
+        // Registrar venta - CORREGIDO
+        Venta ventaRegistrada = ventaService.registrarVenta(usuarioLogueado, detalles, descuento);
+        
+        JOptionPane.showMessageDialog(this, "✅ Venta #" + ventaRegistrada.getId() + " registrada con éxito.");
+        
+        // Limpiar todo
+        modelo.setRowCount(0);
+        lblDescuento.setText("0.00");
+        jCheckBoxDescuento.setSelected(false);
+        actualizarTotales();
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al registrar venta: " + e.getMessage());
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_btnFinalizarVentaActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+      DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
+        modelo.setRowCount(0);
+        lblDescuento.setText("0.00");
+        jCheckBoxDescuento.setSelected(false);
+        actualizarTotales();
+        JOptionPane.showMessageDialog(this, "Venta cancelada.");
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
+          txtBuscarNombre.setText("");
+        jSpinnerCantidad.setValue(1);
+        txtBuscarNombre.requestFocus();
+    }//GEN-LAST:event_btnNuevoItemActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -184,13 +420,13 @@ public class gui_registro_venta extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerCantidad;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblBuscarNombre;
     private javax.swing.JLabel lblDescuento;
     private javax.swing.JLabel lblIVI3;
     private javax.swing.JLabel lblIva7;
     private javax.swing.JLabel lblSubtotal;
     private javax.swing.JLabel lblTotal;
+    private javax.swing.JTable tblDetalles;
     private javax.swing.JTextField txtBuscarNombre;
     // End of variables declaration//GEN-END:variables
 }

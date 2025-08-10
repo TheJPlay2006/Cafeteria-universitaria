@@ -112,7 +112,7 @@ private Usuario usuarioLogueado;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGestionProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionProductoActionPerformed
-      gui_gestion_productos gui_produc = new gui_gestion_productos ();
+      gui_gestion_productos gui_produc = new gui_gestion_productos (usuarioLogueado);
         gui_produc.setVisible(true);
     }//GEN-LAST:event_btnGestionProductoActionPerformed
 
