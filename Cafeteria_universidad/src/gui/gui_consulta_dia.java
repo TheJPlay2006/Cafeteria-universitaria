@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import java.util.Arrays;
+import ui.TicketPDF;
     
 public class gui_consulta_dia extends javax.swing.JDialog {
 
@@ -264,7 +265,52 @@ private VentaServicio ventaService;
     }//GEN-LAST:event_btnVerDetalleActionPerformed
 
     private void btnImprimirTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirTicketActionPerformed
-        btnVerDetalleActionPerformed(evt); 
+    int fila = jTable1.getSelectedRow();
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "Por favor, seleccione una venta de la lista.", "Sin selección", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        // Obtener el ID desde la tabla
+        Integer idVenta = (Integer) modeloTabla.getValueAt(fila, 0);
+
+        // ✅ Usar el método que SÍ carga los detalles
+        Venta venta = ventaService.obtenerVentaConDetalles(idVenta);
+
+        if (venta == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró la venta con ID: " + idVenta, "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Ruta de descarga
+        String rutaPDF = System.getProperty("user.home") + "/Downloads/ticket_venta_" + venta.getId() + ".pdf";
+
+        // ✅ Generar el PDF con tu clase funcional
+        TicketPDF.generarPDF(venta, rutaPDF);
+
+        // Preguntar si abrir
+        int opcion = JOptionPane.showConfirmDialog(
+            this,
+            " Ticket generado:\n" + rutaPDF + "\n\n¿Desea abrirlo?",
+            "Ticket Listo",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.INFORMATION_MESSAGE
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            java.awt.Desktop.getDesktop().open(new java.io.File(rutaPDF));
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(
+            this,
+            " No se pudo generar el ticket: " + e.getMessage(),
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_btnImprimirTicketActionPerformed
     private void jComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxActionPerformed
     String seleccion = jComboBox.getSelectedItem().toString();
