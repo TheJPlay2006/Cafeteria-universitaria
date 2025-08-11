@@ -77,7 +77,6 @@ public class VentaServicio {
             detalles
         );
 
-        // Delegar a repositorio para persistir
         repositorioVenta.registrarVenta(venta);
 
         return venta;

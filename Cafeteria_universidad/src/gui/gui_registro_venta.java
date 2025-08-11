@@ -28,45 +28,40 @@ public class gui_registro_venta extends javax.swing.JFrame {
      */
     
     private Usuario usuarioLogueado;
-  private ProductoServicio productoService;
-        private VentaServicio ventaService;
+    private ProductoServicio productoService;
+    private VentaServicio ventaService;
     
-    public gui_registro_venta() {
-     this.usuarioLogueado = usuario;
+    public gui_registro_venta(Usuario usuarioLogueado1) {
+       this.usuarioLogueado = usuarioLogueado1;
     this.productoService = new ProductoServicio();
-    this.ventaService = new VentaServicio(); 
+    this.ventaService = new VentaServicio();
+    
     initComponents();
-    configurarTabla();
+    inicializarComponentes();
     setLocationRelativeTo(null);
-  
-    jSpinnerCantidad.setValue(1);
     }
     
-     private void configurarTabla() {
-        // Configurar modelo de tabla vacío
-        tblDetalles.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {},
-            new String [] {
-                "Producto", "Cantidad", "Precio", "Total"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-        });
-    }
-     
+     private void inicializarComponentes() {
+    jSpinnerCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+    lblSubtotal.setText("Subtotal: $0.00");
+    lblIva7.setText("IVA (7%): $0.00");
+    lblIVI3.setText("IVI (13%): $0.00");
+    lblDescuento.setText("Descuento: $0.00");
+    lblTotal.setText("Total: $0.00");
+}
+       
 private void actualizarTotales() {
-        double subtotal = 0;
+        double subtotal = 0;        
         
         // Calcular subtotal desde la tabla
         DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
         for (int i = 0; i < modelo.getRowCount(); i++) {
-            double totalLinea = Double.parseDouble(modelo.getValueAt(i, 3).toString());
-            subtotal += totalLinea;
+            try {
+                double totalLinea = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+                subtotal += totalLinea;
+            } catch (NumberFormatException e) {
+                // Ignorar filas con errores
+            }
         }
         
         // Calcular impuestos
@@ -74,9 +69,9 @@ private void actualizarTotales() {
         double ivi = subtotal * 0.13;    // 13%
         double descuento = 0;
         
-        if (jCheckBoxDescuento.isSelected()) {
+        if (jCheckBoxDescuento.isSelected()) {  
             try {
-                descuento = Double.parseDouble(lblDescuento.getText());
+                descuento = Double.parseDouble(lblDescuento.getText().replace("Descuento: $", ""));
             } catch (NumberFormatException e) {
                 descuento = 0;
             }
@@ -91,6 +86,7 @@ private void actualizarTotales() {
         lblDescuento.setText("Descuento: $" + String.format("%.2f", descuento));
         lblTotal.setText("Total: $" + String.format("%.2f", total));
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -131,15 +127,18 @@ private void actualizarTotales() {
 
         tblDetalles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
             },
             new String [] {
                 "Producto", "Cantidad", "Precio", "Total"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblDetalles);
 
         jCheckBoxDescuento.addActionListener(new java.awt.event.ActionListener() {
@@ -184,41 +183,36 @@ private void actualizarTotales() {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblIva7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblIVI3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lblDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 277, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(lblIVI3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblIva7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 30, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addGap(51, 51, 51)
                         .addComponent(lblBuscarNombre)
-                        .addGap(43, 43, 43)
-                        .addComponent(txtBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAgregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSpinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jCheckBoxDescuento))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnFinalizarVenta)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnAgregar)
-                                .addGap(29, 29, 29)
-                                .addComponent(jSpinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(69, 69, 69)
-                                .addComponent(jCheckBoxDescuento))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
-                                .addComponent(btnCancelar)
-                                .addGap(80, 80, 80)
-                                .addComponent(btnNuevoItem)))))
+                        .addGap(230, 230, 230)
+                        .addComponent(btnFinalizarVenta)
+                        .addGap(86, 86, 86)
+                        .addComponent(btnCancelar)
+                        .addGap(83, 83, 83)
+                        .addComponent(btnNuevoItem)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -227,37 +221,31 @@ private void actualizarTotales() {
                 .addGap(45, 45, 45)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBuscarNombre)
-                    .addComponent(txtBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregar)
+                    .addComponent(jSpinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxDescuento))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(92, 92, 92)
-                                .addComponent(btnAgregar))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(83, 83, 83)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBoxDescuento)
-                                    .addComponent(jSpinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(41, 41, 41)
+                        .addGap(36, 36, 36)
                         .addComponent(lblSubtotal)
-                        .addGap(29, 29, 29)
+                        .addGap(18, 18, 18)
                         .addComponent(lblIva7)
                         .addGap(18, 18, 18)
                         .addComponent(lblIVI3)
                         .addGap(18, 18, 18)
-                        .addComponent(lblDescuento)
+                        .addComponent(lblDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblTotal))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(60, 60, 60)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnFinalizarVenta)
                     .addComponent(btnCancelar)
                     .addComponent(btnNuevoItem))
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -275,51 +263,52 @@ private void actualizarTotales() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-    String nombreBuscado = txtBuscarNombre.getText().trim();
+  String nombreBuscado = txtBuscarNombre.getText().trim();
+    System.out.println("🔍 Buscando: '" + nombreBuscado + "'");
+    
+    if (nombreBuscado.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese el nombre del producto.");
+        return;
+    }
+    
+    try {
+        Producto producto = productoService.buscarPorNombre(nombreBuscado);
         
-        if (nombreBuscado.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese el nombre del producto.");
+        if (producto == null || !producto.isActivo()) {
+            JOptionPane.showMessageDialog(this, "Producto no encontrado o inactivo.");
             return;
         }
         
-        try {
-            // Buscar producto por nombre
-            Producto producto = productoService.buscarPorNombre(nombreBuscado);
-            
-            if (producto == null || !producto.isActivo()) {
-                JOptionPane.showMessageDialog(this, "Producto no encontrado o inactivo.");
-                return;
-            }
-            
-            int cantidad = (Integer) jSpinnerCantidad.getValue();
-            double totalLinea = cantidad * producto.getPrecioUnitario();
-            
-            // Agregar a la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
-            Object[] fila = {
-                producto.getNombre(),
-                cantidad,
-                String.format("%.2f", producto.getPrecioUnitario()),
-                String.format("%.2f", totalLinea)
-            };
-            modelo.addRow(fila);
-            
-            // Actualizar totales
-            actualizarTotales();
-            
-            // Limpiar campos
-            txtBuscarNombre.setText("");
-            jSpinnerCantidad.setValue(1);
-            txtBuscarNombre.requestFocus();
-            
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error al buscar producto: " + e.getMessage());
-            e.printStackTrace();
-        }
+        int cantidad = (Integer) jSpinnerCantidad.getValue();
+        double totalLinea = cantidad * producto.getPrecioUnitario();
+        
+        DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
+        Object[] fila = {
+            producto.getNombre(),
+            cantidad,
+            String.format("%.2f", producto.getPrecioUnitario()),
+            String.format("%.2f", totalLinea)
+        };
+        modelo.addRow(fila);
+        
+        // ✅ Forzar actualización visual
+        tblDetalles.revalidate();
+        tblDetalles.repaint();
+        
+        actualizarTotales();
+        
+        txtBuscarNombre.setText("");
+        jSpinnerCantidad.setValue(1);
+        txtBuscarNombre.requestFocus();
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al buscar producto: " + e.getMessage());
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void jCheckBoxDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxDescuentoActionPerformed
-          if (jCheckBoxDescuento.isSelected()) {
+        if (jCheckBoxDescuento.isSelected()) {
             String descuentoStr = JOptionPane.showInputDialog(this, "Ingrese monto de descuento:");
             try {
                 double descuento = Double.parseDouble(descuentoStr);
@@ -341,60 +330,66 @@ private void actualizarTotales() {
 
     private void btnFinalizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarVentaActionPerformed
     if (tblDetalles.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Agregue al menos un producto.");
+            return;
+        }
+    
+        
+        try {
+            // Crear lista de detalles desde la tabla
+            List<DetalleVenta> detalles = new ArrayList<>();
+             DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
+    System.out.println("🔍 Filas en tabla al finalizar: " + modelo.getRowCount());
+    
+    if (modelo.getRowCount() == 0) {
         JOptionPane.showMessageDialog(this, "Agregue al menos un producto.");
         return;
     }
-    
-    try {
-        // Crear lista de detalles desde la tabla
-        List<DetalleVenta> detalles = new ArrayList<>();
-        DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
-        
-        for (int i = 0; i < modelo.getRowCount(); i++) {
-            String nombreProd = modelo.getValueAt(i, 0).toString();
-            int cantidad = Integer.parseInt(modelo.getValueAt(i, 1).toString());
-            double precioUnit = Double.parseDouble(modelo.getValueAt(i, 2).toString());
-            double totalLinea = Double.parseDouble(modelo.getValueAt(i, 3).toString());
-            
-            // Buscar producto por nombre
-            Producto producto = productoService.buscarPorNombre(nombreProd);
-            
-            if (producto != null) {
-                DetalleVenta detalle = new DetalleVenta(
-                    0, null, producto, cantidad, precioUnit, totalLinea
-                );
-                detalles.add(detalle);
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                String nombreProd = modelo.getValueAt(i, 0).toString();
+                int cantidad = Integer.parseInt(modelo.getValueAt(i, 1).toString());
+                double precioUnit = Double.parseDouble(modelo.getValueAt(i, 2).toString());
+                double totalLinea = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+                
+                // Buscar producto por nombre
+                Producto producto = productoService.buscarPorNombre(nombreProd);
+                
+                if (producto != null) {
+                    DetalleVenta detalle = new DetalleVenta(
+                        0, null, producto, cantidad, precioUnit, totalLinea
+                    );
+                    detalles.add(detalle);
+                }
             }
-        }
-        
-        double descuento = 0;
-        if (jCheckBoxDescuento.isSelected()) {
-            try {
-                descuento = Double.parseDouble(lblDescuento.getText());
-            } catch (NumberFormatException e) {
-                descuento = 0;
+            
+            double descuento = 0;
+            if (jCheckBoxDescuento.isSelected()) {
+                try {
+                    descuento = Double.parseDouble(lblDescuento.getText());
+                } catch (NumberFormatException e) {
+                    descuento = 0;
+                }
             }
+            
+            // Registrar venta
+            Venta ventaRegistrada = ventaService.registrarVenta(usuarioLogueado, detalles, descuento);
+            
+            JOptionPane.showMessageDialog(this, "✅ Venta #" + ventaRegistrada.getId() + " registrada con éxito.");
+            
+            // Limpiar todo
+            modelo.setRowCount(0);
+            lblDescuento.setText("0.00");
+            jCheckBoxDescuento.setSelected(false);
+            actualizarTotales();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al registrar venta: " + e.getMessage());
+            e.printStackTrace();
         }
-        
-        // Registrar venta - CORREGIDO
-        Venta ventaRegistrada = ventaService.registrarVenta(usuarioLogueado, detalles, descuento);
-        
-        JOptionPane.showMessageDialog(this, "✅ Venta #" + ventaRegistrada.getId() + " registrada con éxito.");
-        
-        // Limpiar todo
-        modelo.setRowCount(0);
-        lblDescuento.setText("0.00");
-        jCheckBoxDescuento.setSelected(false);
-        actualizarTotales();
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al registrar venta: " + e.getMessage());
-        e.printStackTrace();
-    }
     }//GEN-LAST:event_btnFinalizarVentaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-      DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
+       DefaultTableModel modelo = (DefaultTableModel) tblDetalles.getModel();
         modelo.setRowCount(0);
         lblDescuento.setText("0.00");
         jCheckBoxDescuento.setSelected(false);
@@ -403,7 +398,7 @@ private void actualizarTotales() {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
-          txtBuscarNombre.setText("");
+       txtBuscarNombre.setText("");
         jSpinnerCantidad.setValue(1);
         txtBuscarNombre.requestFocus();
     }//GEN-LAST:event_btnNuevoItemActionPerformed
