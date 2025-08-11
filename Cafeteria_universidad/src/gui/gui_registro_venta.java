@@ -113,11 +113,16 @@ private void actualizarTotales() {
         btnFinalizarVenta = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnNuevoItem = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+
+        lblBuscarNombre.setForeground(new java.awt.Color(255, 255, 255));
         lblBuscarNombre.setText("Buscar producto por nombre: ");
 
+        btnAgregar.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,16 +152,22 @@ private void actualizarTotales() {
             }
         });
 
+        lblSubtotal.setForeground(new java.awt.Color(255, 255, 255));
         lblSubtotal.setText("Subtotal: $X.XX");
 
+        lblIva7.setForeground(new java.awt.Color(255, 255, 255));
         lblIva7.setText("IVA (7%): $X.XX");
 
+        lblIVI3.setForeground(new java.awt.Color(255, 255, 255));
         lblIVI3.setText("IVI (13%): $X.XX");
 
+        lblDescuento.setForeground(new java.awt.Color(255, 255, 255));
         lblDescuento.setText("Descuento: $X.XX");
 
+        lblTotal.setForeground(new java.awt.Color(255, 255, 255));
         lblTotal.setText("Total: $X.XX");
 
+        btnFinalizarVenta.setForeground(new java.awt.Color(255, 255, 255));
         btnFinalizarVenta.setText("Finalizar venta");
         btnFinalizarVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,6 +175,7 @@ private void actualizarTotales() {
             }
         });
 
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,10 +183,19 @@ private void actualizarTotales() {
             }
         });
 
+        btnNuevoItem.setForeground(new java.awt.Color(255, 255, 255));
         btnNuevoItem.setText("Nuevo ítem");
         btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoItemActionPerformed(evt);
+            }
+        });
+
+        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
             }
         });
 
@@ -207,13 +228,15 @@ private void actualizarTotales() {
                         .addGap(18, 18, 18)
                         .addComponent(jCheckBoxDescuento))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(230, 230, 230)
+                        .addGap(174, 174, 174)
                         .addComponent(btnFinalizarVenta)
-                        .addGap(86, 86, 86)
+                        .addGap(44, 44, 44)
                         .addComponent(btnCancelar)
-                        .addGap(83, 83, 83)
-                        .addComponent(btnNuevoItem)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(54, 54, 54)
+                        .addComponent(btnNuevoItem)
+                        .addGap(40, 40, 40)
+                        .addComponent(btnVolver)))
+                .addContainerGap(166, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,7 +267,8 @@ private void actualizarTotales() {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnFinalizarVenta)
                     .addComponent(btnCancelar)
-                    .addComponent(btnNuevoItem))
+                    .addComponent(btnNuevoItem)
+                    .addComponent(btnVolver))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
@@ -403,12 +427,19 @@ private void actualizarTotales() {
         txtBuscarNombre.requestFocus();
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+      gui_principal gui_prin = new gui_principal(usuarioLogueado); 
+    gui_prin.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnFinalizarVenta;
     private javax.swing.JButton btnNuevoItem;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JCheckBox jCheckBoxDescuento;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

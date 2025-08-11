@@ -41,6 +41,11 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jPanel1">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -76,6 +81,9 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnGestionProducto">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="0" red="99" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Gestion producto"/>
           </Properties>
           <Events>
@@ -84,6 +92,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnRegistroVenta">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="0" red="99" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Registro venta"/>
           </Properties>
           <Events>
@@ -92,6 +103,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnConsultaDia">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="0" red="99" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Consulta del d&#xed;a"/>
           </Properties>
           <Events>
@@ -100,6 +114,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCalculadora">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="0" red="99" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Calculadora"/>
           </Properties>
           <Events>

@@ -114,6 +114,8 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        panelCrud.setBackground(new java.awt.Color(0, 0, 0));
+
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -124,6 +126,7 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
         ));
         jScrollPane1.setViewportView(tblProductos);
 
+        btnRefrescar.setForeground(new java.awt.Color(255, 255, 255));
         btnRefrescar.setText("Refrescar");
         btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,6 +134,8 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
             }
         });
 
+        btnNuevo.setBackground(new java.awt.Color(153, 0, 51));
+        btnNuevo.setForeground(new java.awt.Color(255, 255, 255));
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,6 +143,8 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
             }
         });
 
+        btnEditar.setBackground(new java.awt.Color(153, 0, 51));
+        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
         btnEditar.setText("Editar");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,6 +152,7 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
             }
         });
 
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,6 +160,7 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
             }
         });
 
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,6 +168,7 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
             }
         });
 
+        btnActivarDesactivar.setForeground(new java.awt.Color(255, 255, 255));
         btnActivarDesactivar.setText("Activar/Desactivar");
         btnActivarDesactivar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,12 +176,16 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
             }
         });
 
+        jCheckBox.setForeground(new java.awt.Color(255, 255, 255));
         jCheckBox.setText("Activo/Inactivo");
 
+        lblNombreProducto.setForeground(new java.awt.Color(255, 255, 255));
         lblNombreProducto.setText("Nombre del producto: ");
 
+        lblPrecio.setForeground(new java.awt.Color(255, 255, 255));
         lblPrecio.setText("Precio: ");
 
+        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

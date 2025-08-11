@@ -6,18 +6,82 @@ package gui;
 
 /**
  *
- * @author jh599
+ * @author TheJPlay2006
  */
+    
+import dominio.Venta;
+import dominio.DetalleVenta;
+import dominio.Usuario;
+import servicio.VentaServicio;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
+import java.util.Arrays;
+    
 public class gui_consulta_dia extends javax.swing.JDialog {
 
     /**
      * Creates new form gui_consulta_dia
      */
-    public gui_consulta_dia(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        initComponents();
-        setLocationRelativeTo(null);
+    
+private VentaServicio ventaService;
+    private DefaultTableModel modeloTabla;
+    private Usuario usuarioLogueado;
+    private final String[] COLUMNAS_VENTAS = {"ID", "Fecha", "Total", "Items"};
+    private final String[] COLUMNAS_PRODUCTOS = {"Tipo", "Producto", "Cantidad", ""};
+
+   public gui_consulta_dia(java.awt.Frame parent, boolean modal, Usuario usuarioLogueado) {
+    super(parent, modal);
+    this.usuarioLogueado = usuarioLogueado;
+    this.ventaService = new VentaServicio();
+    initComponents();
+
+    modeloTabla = (DefaultTableModel) jTable1.getModel(); 
+
+    cargarVentasDelDia(); 
+    setLocationRelativeTo(null);
+}
+
+ private void cargarVentasDelDia() {
+        try {
+            List<Venta> ventas = ventaService.obtenerVentasDelDia();
+            modeloTabla.setRowCount(0);
+            modeloTabla.setColumnIdentifiers(COLUMNAS_VENTAS); // Aseguramos encabezados correctos
+
+            double totalDia = 0.0;
+
+            if (ventas.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay ventas registradas hoy.");
+                lblTotalDia.setText("Total del día: $0.00");
+                return;
+            }
+
+            for (Venta v : ventas) {
+                Object[] fila = {
+                    v.getId(),
+                    v.getFechaHora().toString().substring(0, 19),
+                    String.format("%.2f", v.getTotal()),
+                    v.getDetalles().size() // ✅ Seguro gracias a Venta con detalles inicializados
+                };
+
+                System.out.println("Agregando fila: " + Arrays.toString(fila));
+                modeloTabla.addRow(fila);
+                totalDia += v.getTotal();
+            }
+
+            lblTotalDia.setText("Total del día: $" + String.format("%.2f", totalDia));
+
+            // Forzar actualización visual
+            jTable1.revalidate();
+            jTable1.repaint();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar ventas: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,131 +99,213 @@ public class gui_consulta_dia extends javax.swing.JDialog {
         btnImprimirTicket = new javax.swing.JButton();
         jComboBox = new javax.swing.JComboBox<>();
         lblTotalDia = new javax.swing.JLabel();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setForeground(new java.awt.Color(0, 0, 0));
+
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "ID", "Fecha", "Total", "Items"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
+        btnVerDetalle.setBackground(new java.awt.Color(153, 0, 51));
+        btnVerDetalle.setForeground(new java.awt.Color(255, 255, 255));
         btnVerDetalle.setText("Ver detalle");
+        btnVerDetalle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerDetalleActionPerformed(evt);
+            }
+        });
 
+        btnImprimirTicket.setBackground(new java.awt.Color(153, 0, 51));
+        btnImprimirTicket.setForeground(new java.awt.Color(255, 255, 255));
         btnImprimirTicket.setText("Imprimir ticket");
+        btnImprimirTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirTicketActionPerformed(evt);
+            }
+        });
 
-        jComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Producto", "Vendedor", " " }));
+        jComboBox.setBackground(new java.awt.Color(153, 0, 51));
+        jComboBox.setForeground(new java.awt.Color(255, 255, 255));
+        jComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Producto", "Vendedor" }));
+        jComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxActionPerformed(evt);
+            }
+        });
 
+        lblTotalDia.setForeground(new java.awt.Color(255, 255, 255));
         lblTotalDia.setText("Total del día: $XXX.XX");
+
+        btnVolver.setBackground(new java.awt.Color(153, 0, 51));
+        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnVerDetalle)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnImprimirTicket)
+                        .addGap(114, 114, 114)
+                        .addComponent(btnVolver))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(197, 197, 197)
-                        .addComponent(btnVerDetalle)
-                        .addGap(180, 180, 180)
-                        .addComponent(btnImprimirTicket))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addComponent(lblTotalDia, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
-                        .addComponent(lblTotalDia, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(71, 71, 71)
-                        .addComponent(jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 132, Short.MAX_VALUE))
+                        .addGap(55, 55, 55)
+                        .addComponent(jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(231, 231, 231)
-                                .addComponent(jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(154, 154, 154)
-                                .addComponent(lblTotalDia)))
-                        .addGap(151, 151, 151))
+                        .addGap(42, 42, 42)
+                        .addComponent(jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(lblTotalDia)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)))
+                        .addContainerGap(21, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVerDetalle)
-                    .addComponent(btnImprimirTicket))
-                .addContainerGap(80, Short.MAX_VALUE))
+                    .addComponent(btnImprimirTicket)
+                    .addComponent(btnVolver))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(gui_consulta_dia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(gui_consulta_dia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(gui_consulta_dia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(gui_consulta_dia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnVerDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerDetalleActionPerformed
+      int fila = jTable1.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione una venta para ver detalle.");
+            return;
         }
-        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                gui_consulta_dia dialog = new gui_consulta_dia(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+        try {
+            int idVenta = (int) jTable1.getValueAt(fila, 0);
+            Venta venta = ventaService.obtenerVentaConDetalles(idVenta);
+
+            StringBuilder detalle = new StringBuilder();
+            detalle.append("VENTA #").append(venta.getId()).append("\n");
+            detalle.append("Fecha: ").append(venta.getFechaHora()).append("\n\n");
+            detalle.append("DETALLES:\n");
+
+            for (DetalleVenta dv : venta.getDetalles()) {
+                detalle.append(dv.getCantidad())
+                       .append("x ")
+                       .append(dv.getProducto().getNombre())
+                       .append(" @ $")
+                       .append(String.format("%.2f", dv.getPrecioUnitario()))
+                       .append(" = $")
+                       .append(String.format("%.2f", dv.getTotalLinea()))
+                       .append("\n");
             }
-        });
-    }
+
+            detalle.append("\nSubtotal: $").append(String.format("%.2f", venta.getSubtotal()));
+            detalle.append("\nIVA (7%): $").append(String.format("%.2f", venta.getImpuestoIVA()));
+            detalle.append("\nIVI (13%): $").append(String.format("%.2f", venta.getImpuestoIVI()));
+            detalle.append("\nDescuento: $").append(String.format("%.2f", venta.getDescuento()));
+            detalle.append("\nTOTAL: $").append(String.format("%.2f", venta.getTotal()));
+
+            JOptionPane.showMessageDialog(this, detalle.toString(), "Detalle de Venta", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar detalle: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnVerDetalleActionPerformed
+
+    private void btnImprimirTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirTicketActionPerformed
+        btnVerDetalleActionPerformed(evt); 
+    }//GEN-LAST:event_btnImprimirTicketActionPerformed
+    private void jComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxActionPerformed
+    String seleccion = jComboBox.getSelectedItem().toString();
+
+        if (seleccion.equals("Producto")) {
+            try {
+                List<Object[]> productos = ventaService.getProductosVendidosDelDia();
+                modeloTabla.setRowCount(0);
+                modeloTabla.setColumnIdentifiers(COLUMNAS_PRODUCTOS); // Cambiamos encabezados
+
+                for (Object[] p : productos) {
+                    modeloTabla.addRow(new Object[]{
+                        "Producto",
+                        p[0].toString(),
+                        "Ventas: " + p[1].toString(),
+                        ""
+                    });
+                }
+                lblTotalDia.setText("Productos más vendidos del día");
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error al cargar productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
+        } else if (seleccion.equals("Vendedor")) {
+            modeloTabla.setColumnIdentifiers(COLUMNAS_VENTAS); 
+            cargarVentasDelDia();
+        }
+    }//GEN-LAST:event_jComboBoxActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+     gui_principal gui_prin = new gui_principal(usuarioLogueado);
+        gui_prin.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnImprimirTicket;
     private javax.swing.JButton btnVerDetalle;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JComboBox<String> jComboBox;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
