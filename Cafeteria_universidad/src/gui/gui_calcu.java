@@ -4,25 +4,53 @@
  */
 package gui;
 
-import javax.swing.JOptionPane;
-
+import javax.swing.*;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptEngine;
+import ui.Calcu;
 
 /**
  *
  * @author Emesis
  */
 public class gui_calcu extends javax.swing.JDialog {
-     double num1, num2, resultado;
-     String operacion;
-    /**
-     * Creates new form gui_calcu
-     */
+
     public gui_calcu(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
     }
-    
+
+    // Añadir número
+    private void appendNumber(String s) {
+        lblResultado.setText(lblResultado.getText() + s);
+    }
+
+    // Añadir operador con manejo inteligente
+    private void appendOperator(String op) {
+        String text = lblResultado.getText();
+        if (text.isEmpty()) {
+            if (op.equals("-")) {
+                lblResultado.setText("-");
+            }
+            return;
+        }
+
+        char lastChar = text.charAt(text.length() - 1);
+        if ("+-*/^%".indexOf(lastChar) >= 0 || text.endsWith(" mod ")) {
+            if (text.endsWith(" mod ")) {
+                lblResultado.setText(text.substring(0, text.length() - 5) + " " + op + " ");
+            } else {
+                lblResultado.setText(text.substring(0, text.length() - 1) + op);
+            }
+        } else {
+            if (op.equals(" mod ")) {
+                lblResultado.setText(text + " mod ");
+            } else {
+                lblResultado.setText(text + op);
+            }
+        }
+    }
    
     /**
      * This method is called from within the constructor to initialize the form.
@@ -58,7 +86,7 @@ public class gui_calcu extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnEliminar.setText("C");
@@ -234,13 +262,12 @@ public class gui_calcu extends javax.swing.JDialog {
                                         .addComponent(btnMultiplicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(btnResta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(btnCuatro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnSiete, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(btnUno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnMOD, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
+                                            .addComponent(btnMOD, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                                            .addComponent(btnSiete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(btnCuatro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(38, 38, 38)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -332,122 +359,80 @@ public class gui_calcu extends javax.swing.JDialog {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
           lblResultado.setText("");
-          num1 = num2 = resultado = 0;
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnMultiplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultiplicacionActionPerformed
-        num1 = Double.parseDouble(lblResultado.getText());
-        operacion = "*";
-        lblResultado.setText("");
+      appendOperator("*");
     }//GEN-LAST:event_btnMultiplicacionActionPerformed
 
     private void btnPorcentajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPorcentajeActionPerformed
-       num1 = Double.parseDouble(lblResultado.getText());
-       operacion = "%"; // Indicamos que es porcentaje
-       lblResultado.setText("");
+         appendOperator("%");
     }//GEN-LAST:event_btnPorcentajeActionPerformed
 
     private void btnRestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestaActionPerformed
-        num1 = Double.parseDouble(lblResultado.getText());
-        operacion = "-";
-        lblResultado.setText("");
+       appendOperator("-");                            
     }//GEN-LAST:event_btnRestaActionPerformed
 
     private void btnSieteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSieteActionPerformed
-        lblResultado.setText(lblResultado.getText() + "7");
+        appendNumber("7");
     }//GEN-LAST:event_btnSieteActionPerformed
 
     private void btnPotenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPotenciaActionPerformed
-         num1 = Double.parseDouble(lblResultado.getText());
-    operacion = "^";
-    lblResultado.setText("");
+       appendOperator("^");
     }//GEN-LAST:event_btnPotenciaActionPerformed
 
     private void btnMODActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMODActionPerformed
-        num1 = Double.parseDouble(lblResultado.getText());
-        operacion = "mod";
-        lblResultado.setText("");
+       lblResultado.setText(lblResultado.getText() + " mod ");
     }//GEN-LAST:event_btnMODActionPerformed
 
     private void btnNueveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNueveActionPerformed
-        lblResultado.setText(lblResultado.getText() + "9");
+      appendNumber("9");
     }//GEN-LAST:event_btnNueveActionPerformed
 
     private void btnOchoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOchoActionPerformed
-        lblResultado.setText(lblResultado.getText() + "8");
+      appendNumber("8");
     }//GEN-LAST:event_btnOchoActionPerformed
 
     private void btnSeisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeisActionPerformed
-        lblResultado.setText(lblResultado.getText() + "6");
+      appendNumber("6");
     }//GEN-LAST:event_btnSeisActionPerformed
 
     private void btnIgualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIgualActionPerformed
-         num2 = Double.parseDouble(lblResultado.getText());
-    switch (operacion) {
-        case "+":
-            resultado = num1 + num2;
-            break;
-        case "-":
-            resultado = num1 - num2;
-            break;
-        case "*":
-            resultado = num1 * num2;
-            break;
-        case "/":
-            if (num2 == 0) {
-                JOptionPane.showMessageDialog(this, "No se puede dividir entre 0");
-                return;
-            }
-            resultado = num1 / num2;
-            break;
-        case "^":
-            resultado = Math.pow(num1, num2);
-            break;
-        case "mod":
-            resultado = num1 % num2;
-            break;
-        case "%":
-            resultado = (num1 * num2) / 100;
-            break;
-    }
-    lblResultado.setText(String.valueOf(resultado));
+    String expresion = lblResultado.getText();
+    String resultado = Calcu.evaluar(expresion);
+    lblResultado.setText(resultado);
     }//GEN-LAST:event_btnIgualActionPerformed
 
     private void btnDivisionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivisionActionPerformed
-        num1 = Double.parseDouble(lblResultado.getText());
-        operacion = "/";
-        lblResultado.setText("");
+        appendOperator("/");
     }//GEN-LAST:event_btnDivisionActionPerformed
 
     private void btnCuatroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuatroActionPerformed
-        lblResultado.setText(lblResultado.getText() + "4");
+       appendNumber("4");
     }//GEN-LAST:event_btnCuatroActionPerformed
 
     private void btnSumaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSumaActionPerformed
-         num1 = Double.parseDouble(lblResultado.getText());
-        operacion = "+";
-        lblResultado.setText("");
+         appendOperator("+");
     }//GEN-LAST:event_btnSumaActionPerformed
 
     private void btnTresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTresActionPerformed
-        lblResultado.setText(lblResultado.getText() + "3");
+    appendNumber("3");
     }//GEN-LAST:event_btnTresActionPerformed
 
     private void btnDosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDosActionPerformed
-        lblResultado.setText(lblResultado.getText() + "2");
+       appendNumber("2");
     }//GEN-LAST:event_btnDosActionPerformed
 
     private void btnUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnoActionPerformed
-        lblResultado.setText(lblResultado.getText() + "1");
+        appendNumber("1");
     }//GEN-LAST:event_btnUnoActionPerformed
 
     private void btnCincoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCincoActionPerformed
-       lblResultado.setText(lblResultado.getText() + "5");
+      appendNumber("5");
     }//GEN-LAST:event_btnCincoActionPerformed
 
     private void btnCeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCeroActionPerformed
-     lblResultado.setText("0");
-     num1 = num2 = resultado = 0;
+      appendNumber("0");
     }//GEN-LAST:event_btnCeroActionPerformed
 
     /**
