@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-// servicio/ProductoService.java
+// servicio/ProductoServicio.java
 package servicio;
 
 import datos.RepositorioProducto;
@@ -15,13 +15,26 @@ import java.util.List;
  * @author TheJPlay2006
  */
 public class ProductoServicio {
-
+    
     private final RepositorioProducto repositorioProducto;
 
     public ProductoServicio() {
         this.repositorioProducto = new RepositorioProducto();
     }
 
+    /**
+     * Busca un producto por su nombre exacto.
+     * 
+     * @param nombre Nombre del producto a buscar
+     * @return Producto encontrado o null si no existe o está inactivo
+     * @throws SQLException
+     */
+    public Producto buscarPorNombre(String nombre) throws SQLException {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return null;
+        }
+        return repositorioProducto.findByNombre(nombre.trim());
+    }
 
     public void guardarProducto(String nombre, double precio, boolean activo, Producto productoExistente) 
             throws IllegalArgumentException, SQLException {
@@ -67,7 +80,6 @@ public class ProductoServicio {
         }
     }
 
-
     public List<Producto> listarProductos() throws SQLException {
         return repositorioProducto.findAll();
     }
@@ -75,7 +87,6 @@ public class ProductoServicio {
     public void activarDesactivarProducto(int id, boolean activo) throws SQLException {
         repositorioProducto.activarDesactivar(id, activo);
     }
-
 
     public Producto obtenerProductoPorId(int id) throws SQLException {
         return repositorioProducto.findById(id);

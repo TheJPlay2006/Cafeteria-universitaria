@@ -5,6 +5,7 @@
 package gui;
 
 import dominio.Producto;
+import dominio.Usuario;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -15,36 +16,44 @@ import java.sql.SQLException;
  *
  * @author jh599
  */
+
 public class gui_gestion_productos extends javax.swing.JFrame {
 
     /**
      * Creates new form gui_gestion_productos
      */
     
+    
+    private Usuario usuarioLogueado;
     private ProductoServicio productoService;
 private Producto productoSeleccionado; 
 private boolean editando = false;
 
-    public gui_gestion_productos() {
-        // Inicializar servicio
+    public gui_gestion_productos(Usuario usuario) {
+      this.usuarioLogueado = usuario;
     this.productoService = new ProductoServicio();
     this.productoSeleccionado = null;
+    
     initComponents();
-    setLocationRelativeTo(null);
-   
+    
+    // Configurar botón refrescar 
+    btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnRefrescarActionPerformed(evt);
+        }
+    });
+    
     cargarProductosEnTabla();
-         setLocationRelativeTo(null);
+    setLocationRelativeTo(null);
     }
+    
+    
 private void cargarProductosEnTabla() {
     try {
-        // Limpiar tabla
         DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
-        modelo.setRowCount(0); // Limpiar filas
+        modelo.setRowCount(0); // ✅ Limpia todas las filas antes de cargar
 
-        // Obtener productos del servicio
         List<Producto> productos = productoService.listarProductos();
-
-        // Agregar filas
         for (Producto p : productos) {
             Object[] fila = {
                 p.getId(),
@@ -56,9 +65,7 @@ private void cargarProductosEnTabla() {
         }
 
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this,
-            "❌ No se pudieron cargar los productos: " + e.getMessage(),
-            "Error de conexión", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "❌ Error al cargar productos.");
         e.printStackTrace();
     }
 }
@@ -92,6 +99,7 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
         panelCrud = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProductos = new javax.swing.JTable();
+        btnRefrescar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
@@ -102,21 +110,26 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
         jCheckBox = new javax.swing.JCheckBox();
         lblNombreProducto = new javax.swing.JLabel();
         lblPrecio = new javax.swing.JLabel();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Nombre", "Precio", "Estado"
             }
         ));
         jScrollPane1.setViewportView(tblProductos);
+
+        btnRefrescar.setText("Refrescar");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
 
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -153,9 +166,18 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
             }
         });
 
+        jCheckBox.setText("Activo/Inactivo");
+
         lblNombreProducto.setText("Nombre del producto: ");
 
         lblPrecio.setText("Precio: ");
+
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelCrudLayout = new javax.swing.GroupLayout(panelCrud);
         panelCrud.setLayout(panelCrudLayout);
@@ -164,31 +186,35 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
             .addGroup(panelCrudLayout.createSequentialGroup()
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCrudLayout.createSequentialGroup()
-                        .addGap(241, 241, 241)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelCrudLayout.createSequentialGroup()
-                        .addGap(94, 94, 94)
+                        .addGap(77, 77, 77)
                         .addComponent(btnNuevo)
-                        .addGap(61, 61, 61)
+                        .addGap(18, 18, 18)
                         .addComponent(btnEditar)
-                        .addGap(35, 35, 35)
+                        .addGap(18, 18, 18)
                         .addComponent(btnGuardar)
-                        .addGap(62, 62, 62)
+                        .addGap(18, 18, 18)
                         .addComponent(btnCancelar)
-                        .addGap(53, 53, 53)
-                        .addComponent(btnActivarDesactivar))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnVolver)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnActivarDesactivar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRefrescar))
                     .addGroup(panelCrudLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
+                        .addGap(143, 143, 143)
                         .addComponent(lblNombreProducto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
+                        .addGap(18, 18, 18)
                         .addComponent(lblPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox)))
-                .addContainerGap(234, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jCheckBox))
+                    .addGroup(panelCrudLayout.createSequentialGroup()
+                        .addGap(122, 122, 122)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
         panelCrudLayout.setVerticalGroup(
             panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,27 +227,31 @@ private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {
                         .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblNombreProducto)
                         .addComponent(lblPrecio)))
-                .addGap(66, 66, 66)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(33, 33, 33)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar)
+                    .addComponent(btnNuevo)
+                    .addComponent(btnVolver)
                     .addComponent(btnActivarDesactivar)
-                    .addComponent(btnNuevo))
-                .addContainerGap(80, Short.MAX_VALUE))
+                    .addComponent(btnRefrescar))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCrud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelCrud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCrud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelCrud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -326,40 +356,17 @@ private void limpiarFormulario() {
     }
     }//GEN-LAST:event_btnActivarDesactivarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(gui_gestion_productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(gui_gestion_productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(gui_gestion_productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(gui_gestion_productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+     gui_principal gui_prin = new gui_principal(usuarioLogueado);
+    gui_prin.setVisible(true);
+    this.dispose(); // cierra la ventana actual
+    }//GEN-LAST:event_btnVolverActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new gui_gestion_productos().setVisible(true);
-            }
-        });
-    }
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        cargarProductosEnTabla();
+    JOptionPane.showMessageDialog(this, "🔄 Tabla actualizada.");
+    }//GEN-LAST:event_btnRefrescarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActivarDesactivar;
@@ -367,6 +374,8 @@ private void limpiarFormulario() {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnRefrescar;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JCheckBox jCheckBox;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JScrollPane jScrollPane1;

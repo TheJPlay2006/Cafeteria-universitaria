@@ -112,23 +112,27 @@ private Usuario usuarioLogueado;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGestionProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionProductoActionPerformed
-      gui_gestion_productos gui_produc = new gui_gestion_productos ();
-        gui_produc.setVisible(true);
+      gui_gestion_productos gui_produc = new gui_gestion_productos (usuarioLogueado);
+    gui_produc.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_btnGestionProductoActionPerformed
 
     private void btnRegistroVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroVentaActionPerformed
-        gui_registro_venta gui_venta = new gui_registro_venta ();
-        gui_venta.setVisible(true);
+        gui_registro_venta gui_venta = new gui_registro_venta (usuarioLogueado);
+    gui_venta.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnRegistroVentaActionPerformed
 
     private void btnConsultaDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaDiaActionPerformed
       gui_consulta_dia gui_consulta = new gui_consulta_dia(this, true); 
         gui_consulta.setVisible(true);
+            this.dispose();
     }//GEN-LAST:event_btnConsultaDiaActionPerformed
     
     private void btnCalculadoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculadoraActionPerformed
       gui_calcu gui_cal = new gui_calcu(this, true);  
     gui_cal.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCalculadoraActionPerformed
 
     /**

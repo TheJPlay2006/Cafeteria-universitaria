@@ -9,13 +9,19 @@ package Main;
  *
  * @author jh599
  */
+
+import gui.gui_login;  // ajusta el nombre y paquete según tengas tu clase
+
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        // Ejecutar la GUI en el hilo de eventos Swing
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                gui_login login = new gui_login();
+                login.setVisible(true);
+                login.setLocationRelativeTo(null);  // centra la ventana
+            }
+        });
     }
-    
 }

@@ -12,7 +12,7 @@ CREATE DATABASE cafeteria_universitaria;
 GO
 
 -- 3. Usar la base de datos
-USE cafeteria_universitaria;
+USE cafeteria_universitaria;    
 GO
 
 -- 4. Crear tabla USUARIOS
@@ -104,3 +104,30 @@ PRINT '➡️  Tablas creadas: USUARIOS, PRODUCTOS, VENTAS, DETALLES_VENTA, LOGS
 PRINT '➡️  Usa autenticación integrada en Java: integratedSecurity=true';
 
 -- Fin del script
+
+USE cafeteria_universitaria;
+GO
+
+-- Insertar múltiples productos de ejemplo
+INSERT INTO PRODUCTOS (nombre, precio_unitario, activo, creado) VALUES
+('Café Americano', 1.50, 1, GETDATE()),
+('Capuchino', 2.50, 1, GETDATE()),
+('Té Verde', 1.20, 1, GETDATE()),
+('Sándwich de Jamón y Queso', 3.00, 1, GETDATE()),
+('Galletas (paquete)', 0.80, 1, GETDATE()),
+('Jugo Natural', 2.00, 1, GETDATE()),
+('Muffin', 1.80, 1, GETDATE()),
+('Agua Mineral', 1.00, 1, GETDATE()),
+('Croissant', 2.20, 1, GETDATE()),
+('Yogur', 2.40, 1, GETDATE()),
+('Bagel con Queso', 3.50, 1, GETDATE()),
+('Batido de Frutas', 3.00, 1, GETDATE()),
+('Tostado de Pollo', 3.20, 1, GETDATE()),
+('Ensalada César', 4.00, 1, GETDATE()),
+('Sopa del Día', 2.80, 1, GETDATE());
+
+PRINT '✅ 15 productos insertados con éxito en la tabla PRODUCTOS';
+
+
+USE cafeteria_universitaria;
+SELECT id, nombre, precio_unitario FROM PRODUCTOS ORDER BY id ASC;
