@@ -42,6 +42,9 @@ private Usuario usuarioLogueado;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+
+        btnGestionProducto.setBackground(new java.awt.Color(153, 0, 51));
         btnGestionProducto.setText("Gestion producto");
         btnGestionProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -49,6 +52,7 @@ private Usuario usuarioLogueado;
             }
         });
 
+        btnRegistroVenta.setBackground(new java.awt.Color(153, 0, 51));
         btnRegistroVenta.setText("Registro venta");
         btnRegistroVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -56,6 +60,7 @@ private Usuario usuarioLogueado;
             }
         });
 
+        btnConsultaDia.setBackground(new java.awt.Color(153, 0, 51));
         btnConsultaDia.setText("Consulta del día");
         btnConsultaDia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -63,6 +68,7 @@ private Usuario usuarioLogueado;
             }
         });
 
+        btnCalculadora.setBackground(new java.awt.Color(153, 0, 51));
         btnCalculadora.setText("Calculadora");
         btnCalculadora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,9 +130,8 @@ private Usuario usuarioLogueado;
     }//GEN-LAST:event_btnRegistroVentaActionPerformed
 
     private void btnConsultaDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaDiaActionPerformed
-      gui_consulta_dia gui_consulta = new gui_consulta_dia(this, true); 
-        gui_consulta.setVisible(true);
-            this.dispose();
+ gui_consulta_dia gui = new gui_consulta_dia(this, true, usuarioLogueado);
+    gui.setVisible(true);   
     }//GEN-LAST:event_btnConsultaDiaActionPerformed
     
     private void btnCalculadoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculadoraActionPerformed

@@ -117,8 +117,12 @@ private void actualizarTotales() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+
+        lblBuscarNombre.setForeground(new java.awt.Color(255, 255, 255));
         lblBuscarNombre.setText("Buscar producto por nombre: ");
 
+        btnAgregar.setForeground(new java.awt.Color(255, 255, 255));
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,16 +152,22 @@ private void actualizarTotales() {
             }
         });
 
+        lblSubtotal.setForeground(new java.awt.Color(255, 255, 255));
         lblSubtotal.setText("Subtotal: $X.XX");
 
+        lblIva7.setForeground(new java.awt.Color(255, 255, 255));
         lblIva7.setText("IVA (7%): $X.XX");
 
+        lblIVI3.setForeground(new java.awt.Color(255, 255, 255));
         lblIVI3.setText("IVI (13%): $X.XX");
 
+        lblDescuento.setForeground(new java.awt.Color(255, 255, 255));
         lblDescuento.setText("Descuento: $X.XX");
 
+        lblTotal.setForeground(new java.awt.Color(255, 255, 255));
         lblTotal.setText("Total: $X.XX");
 
+        btnFinalizarVenta.setForeground(new java.awt.Color(255, 255, 255));
         btnFinalizarVenta.setText("Finalizar venta");
         btnFinalizarVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,6 +175,7 @@ private void actualizarTotales() {
             }
         });
 
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,6 +183,7 @@ private void actualizarTotales() {
             }
         });
 
+        btnNuevoItem.setForeground(new java.awt.Color(255, 255, 255));
         btnNuevoItem.setText("Nuevo ítem");
         btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,6 +191,7 @@ private void actualizarTotales() {
             }
         });
 
+        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
