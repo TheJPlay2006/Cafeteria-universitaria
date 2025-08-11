@@ -131,3 +131,45 @@ PRINT '✅ 15 productos insertados con éxito en la tabla PRODUCTOS';
 
 USE cafeteria_universitaria;
 SELECT id, nombre, precio_unitario FROM PRODUCTOS ORDER BY id ASC;
+
+SELECT TABLE_NAME
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_TYPE = 'BASE TABLE';
+
+SELECT id, nombre, precio_unitario FROM PRODUCTOS ORDER BY id ASC;
+
+SELECT id, username, rol, activo FROM USUARIOS;
+
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'USUARIOS';
+
+
+-- Crear la tabla USUARIOS
+CREATE TABLE USUARIOS (
+    id INT IDENTITY(1,1) PRIMARY KEY, -- Identificador único autoincremental
+    nombre_usuario NVARCHAR(50) UNIQUE NOT NULL, -- Nombre de usuario único
+    nombre_completo NVARCHAR(100) NOT NULL, -- Nombre completo del usuario
+    correo_electronico NVARCHAR(100) UNIQUE NOT NULL, -- Correo electrónico único
+    fecha_creacion DATETIME DEFAULT GETDATE() -- Fecha y hora de creación (valor predeterminado)
+);
+GO
+
+-- Insertar datos de prueba
+INSERT INTO USUARIOS (nombre_usuario, nombre_completo, correo_electronico) VALUES
+('admin', 'Administrador del Sistema', 'admin@cafeteria.com'),
+('cajero1', 'Juan Pérez', 'juan.perez@cafeteria.com'),
+('cajero2', 'María López', 'maria.lopez@cafeteria.com');
+GO
+
+-- Verificar los datos insertados
+SELECT * FROM USUARIOS;
+
+-- Insertar ventas de prueba
+INSERT INTO VENTAS (user_id, subtotal, impuestoIVA, impuestoIVI, descuento, total, fecha_hora) VALUES
+(1, 10.00, 0.70, 1.30, 0.00, 12.00, GETDATE()),
+(2, 15.00, 1.05, 1.95, 0.00, 18.00, GETDATE());
+
+USE cafeteria_universitaria;
+GO
+
