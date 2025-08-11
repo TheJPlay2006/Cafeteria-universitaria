@@ -113,6 +113,7 @@ private void actualizarTotales() {
         btnFinalizarVenta = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnNuevoItem = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -178,6 +179,13 @@ private void actualizarTotales() {
             }
         });
 
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -207,13 +215,15 @@ private void actualizarTotales() {
                         .addGap(18, 18, 18)
                         .addComponent(jCheckBoxDescuento))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(230, 230, 230)
+                        .addGap(174, 174, 174)
                         .addComponent(btnFinalizarVenta)
-                        .addGap(86, 86, 86)
+                        .addGap(44, 44, 44)
                         .addComponent(btnCancelar)
-                        .addGap(83, 83, 83)
-                        .addComponent(btnNuevoItem)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(54, 54, 54)
+                        .addComponent(btnNuevoItem)
+                        .addGap(40, 40, 40)
+                        .addComponent(btnVolver)))
+                .addContainerGap(166, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,7 +254,8 @@ private void actualizarTotales() {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnFinalizarVenta)
                     .addComponent(btnCancelar)
-                    .addComponent(btnNuevoItem))
+                    .addComponent(btnNuevoItem)
+                    .addComponent(btnVolver))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
@@ -403,12 +414,19 @@ private void actualizarTotales() {
         txtBuscarNombre.requestFocus();
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+      gui_principal gui_prin = new gui_principal(usuarioLogueado); 
+    gui_prin.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnFinalizarVenta;
     private javax.swing.JButton btnNuevoItem;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JCheckBox jCheckBoxDescuento;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

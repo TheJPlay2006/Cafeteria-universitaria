@@ -16,13 +16,13 @@
         private java.time.LocalDateTime creado;
 
         public Usuario(int id, String nombreUsuario, String contrasenaHash, String rol, boolean activo, java.time.LocalDateTime creado) {
-            this.id = id;
-            this.nombreUsuario = nombreUsuario;
-            this.contrasenaHash = contrasenaHash;
-            this.rol = rol;
-            this.activo = activo;
-            this.creado = creado;
-        }
+    this.id = id;
+    this.nombreUsuario = nombreUsuario;
+    this.contrasenaHash = contrasenaHash;
+    this.rol = rol;
+    this.activo = activo;
+    this.creado = creado;
+}
 
         // Getters y Setters
         public int getId() {
