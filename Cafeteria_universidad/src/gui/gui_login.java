@@ -23,6 +23,7 @@ public class gui_login extends javax.swing.JFrame {
      */
     public gui_login() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -53,6 +54,11 @@ public class gui_login extends javax.swing.JFrame {
         lblContrasena.setText("Contraseña:");
 
         jCheckBoxContrasena.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jCheckBoxContrasena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxContrasenaActionPerformed(evt);
+            }
+        });
 
         btnIngresar.setText("Ingresar");
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
@@ -76,12 +82,11 @@ public class gui_login extends javax.swing.JFrame {
                                 .addGap(115, 115, 115)
                                 .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jPasswordFieldContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jCheckBoxContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPasswordFieldContrasena, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                            .addComponent(txtUsuario))
+                        .addGap(18, 18, 18)
+                        .addComponent(jCheckBoxContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(237, 237, 237)
                         .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -187,7 +192,16 @@ public class gui_login extends javax.swing.JFrame {
         jProgressBarAnimacion.setIndeterminate(false);
         btnIngresar.setEnabled(true);
     }
+        this.dispose();
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void jCheckBoxContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxContrasenaActionPerformed
+        if (jCheckBoxContrasena.isSelected()) {
+        jPasswordFieldContrasena.setEchoChar((char) 0); 
+    } else {
+        jPasswordFieldContrasena.setEchoChar('*');
+    }
+    }//GEN-LAST:event_jCheckBoxContrasenaActionPerformed
 
     /**
      * @param args the command line arguments

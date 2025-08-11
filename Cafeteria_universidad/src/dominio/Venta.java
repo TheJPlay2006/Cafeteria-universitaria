@@ -7,7 +7,7 @@ package dominio;
 import java.util.List;
 
 /**
- * Representa una venta realizada por un usuario (cajero).
+ * Representa una venta realizada por un usuario 
  */
 public class Venta {
     private int id;
