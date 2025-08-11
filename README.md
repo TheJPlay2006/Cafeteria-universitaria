@@ -61,7 +61,7 @@ src/
 - **Swing** - Interfaz gráfica de usuario
 - **JDBC** - Conectividad con base de datos
 - **SQL Server** - Sistema de gestión de base de datos
-- **Maven/Ant** - Gestión de dependencias y construcción
+- **Apache Ant** - Herramienta de construcción y automatización
 - **JUnit** - Pruebas unitarias
 - **Git/GitHub** - Control de versiones
 
@@ -131,7 +131,7 @@ LOGS(
 
 - **Java JDK 11** o superior
 - **SQL Server 2019** o superior
-- **Maven 3.6+** o **Apache Ant**
+- **Apache Ant 1.10+**
 - **IDE** recomendado: IntelliJ IDEA, Eclipse o NetBeans
 
 ### Librerías Incluidas
@@ -170,22 +170,20 @@ private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriv
 
 ### 4. Compilar y Ejecutar
 
-#### Con Maven:
-```bash
-mvn clean compile
-mvn exec:java -Dexec.mainClass="main.Main"
-```
-
 #### Con Ant:
 ```bash
+# Compilar el proyecto
 ant compile
-ant run
-```
 
-#### Generar JAR:
-```bash
-mvn clean package
-# El JAR se genera en target/cafeteria-universitaria-1.0.jar
+# Ejecutar la aplicación
+ant run
+
+# Generar JAR
+ant jar
+# El JAR se genera en dist/cafeteria-universitaria.jar
+
+# Limpiar archivos compilados
+ant clean
 ```
 
 ## 👨‍💻 Uso del Sistema
@@ -208,11 +206,11 @@ mvn clean package
 ## 🧪 Pruebas
 
 ```bash
-# Ejecutar todas las pruebas
-mvn test
+# Compilar y ejecutar pruebas
+ant test
 
-# Ejecutar pruebas específicas
-mvn test -Dtest=ProductoServicioTest
+# Generar reporte de pruebas
+ant test-report
 ```
 
 ## 📁 Archivos de Configuración
@@ -226,8 +224,9 @@ mvn test -Dtest=ProductoServicioTest
 
 ### Archivos de Build
 
-- `pom.xml` - Configuración Maven
-- `build.xml` - Configuración Ant (alternativa)
+- `build.xml` - Configuración principal de Ant
+- `build.properties` - Properties del proyecto (opcional)
+- `lib/` - Directorio con librerías JAR
 
 ## 🔧 Características Técnicas
 
